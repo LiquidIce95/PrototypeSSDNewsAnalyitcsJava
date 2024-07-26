@@ -4,6 +4,8 @@ import ch.uzh.ifi.hase.soprafs24.constant.UserStatus;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 /**
  * Internal User Representation
@@ -16,13 +18,13 @@ import java.io.Serializable;
  * the primary key
  */
 @Entity
-@Table(name = "USER")
+@Table(name = "COMP_USER")
 public class User implements Serializable {
 
   private static final long serialVersionUID = 1L;
 
   @Id
-  @GeneratedValue
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
   @Column(nullable = false)
@@ -34,6 +36,7 @@ public class User implements Serializable {
   @Column(nullable = false, unique = true)
   private String token;
 
+  @Enumerated(EnumType.STRING)
   @Column(nullable = false)
   private UserStatus status;
 
