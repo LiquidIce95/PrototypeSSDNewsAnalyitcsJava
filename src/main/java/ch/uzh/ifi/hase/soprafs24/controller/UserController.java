@@ -54,4 +54,15 @@ public class UserController {
     // convert internal representation of user back to API
     return DTOMapper.INSTANCE.convertEntityToUserGetDTO(createdUser);
   }
+
+  @DeleteMapping("/users/{userId}")
+  @ResponseStatus(HttpStatus.OK)
+  @ResponseBody
+  public void userDeletion(@PathVariable long userId) throws Exception{
+
+    User user = userService.getUser(userId);
+
+    userService.deleteUser(user);
+
+  }
 }

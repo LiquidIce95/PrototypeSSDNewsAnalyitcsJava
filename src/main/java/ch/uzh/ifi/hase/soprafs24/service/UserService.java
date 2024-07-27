@@ -40,8 +40,6 @@ public class UserService {
   }
 
   public User createUser(User newUser) {
-    newUser.setToken(UUID.randomUUID().toString());
-    newUser.setStatus(UserStatus.OFFLINE);
     checkIfUserExists(newUser);
     // saves the given entity but data is only persisted in the database once
     // flush() is called
@@ -74,6 +72,26 @@ public class UserService {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.format(baseErrorMessage, "username", "is"));
     } else if (userByName != null) {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.format(baseErrorMessage, "name", "is"));
+    }
+  }
+
+  public void deleteUser(User user) throws Exception{
+    try {
+        this.userRepository.delete(user);
+    }
+    catch (Exception e) {
+        throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "User could not be deleted");
+    }
+
+  }
+
+  public User getUser(long user_Id) throws Exception {
+    try{
+      User user = userRepository.findById(user_Id);
+      return user;
+    }
+    catch (Exception e){
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND,e.getMessage()+"Could not find User with given UserId");
     }
   }
 }
